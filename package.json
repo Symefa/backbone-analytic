@@ -1,0 +1,40 @@
+{
+  "name": "backbone-analytic",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "jest --detectOpenHandles",
+    "start": "nodemon server.js",
+    "migrate": "npx sequelize-cli db:migrate",
+    "seed": "sequelize db:seed:all"
+  },
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": ""
+  },
+  "homepage": "",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "jsend": "^1.1.0",
+    "moment": "^2.25.3",
+    "pg": "^8.1.0",
+    "pg-hstore": "^2.3.3",
+    "sequelize": "^5.21.8",
+    "swagger-jsdoc": "^4.0.0",
+    "swagger-ui-express": "^4.1.4"
+  },
+  "devDependencies": {
+    "jest": "^26.4.0",
+    "superagent": "^6.0.0",
+    "supertest": "^4.0.2"
+  }
+}
