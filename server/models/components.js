@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     );
     Components.associate = function (models) {
         Components.belongsTo(models.Analytics, {foreignKey: 'analyticId', as: 'Analytic'});
+        Components.hasMany(models.yAxises, {foreignKey: 'componentId', as: 'yAxises'});
     };
     return Components;
 };

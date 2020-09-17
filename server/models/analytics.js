@@ -13,6 +13,7 @@ module.exports = (sequelize, DataTypes) => {
     Analytics.associate = function (models) {
         Analytics.belongsTo(models.Charts, {foreignKey: 'chartId', as: 'Chart'});
         Analytics.belongsTo(models.ChartTypes, {foreignKey: 'chartTypeId', as: 'ChartType'});
+        Analytics.hasMany(models.Components, {foreignKey: 'analyticId', as: 'Components'});
     };
     return Analytics;
 };
