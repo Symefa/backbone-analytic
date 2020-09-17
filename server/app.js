@@ -6,6 +6,12 @@ const router = express.Router()
 const swaggerUI = require('swagger-ui-express')
 const openApiDoc = require('./docs')
 
+const analytic = require('./routes/analytic');
+const data = require('./routes/data');
+
+//ROUTES
+app.use(analytic);
+app.use(data);
 
 //MIDDLEWARE
 app.use(cors())

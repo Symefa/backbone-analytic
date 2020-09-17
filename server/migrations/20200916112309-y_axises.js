@@ -15,7 +15,7 @@ module.exports = {
       name: {
         type: Sequelize.STRING
       },
-      stackName: {
+      columnName: {
         type: Sequelize.STRING
       },
       createdAt: {

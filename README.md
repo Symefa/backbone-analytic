@@ -23,7 +23,7 @@
 3. `npx sequelize-cli db:migrate:undo:all` to remove all models in database
 
 # writing test
-1. each controller has one test suite at tests forlder with format name `{name}.controllers.test.js`
+1. each controller has one test suite at tests forlder with format name `{name}.controllers.seq.js`
 2. each function has one describe block `describe('function title' , () => { })`
 3. give proper short description for each test
 

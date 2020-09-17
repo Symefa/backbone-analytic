@@ -8,8 +8,46 @@ const {
         DB_ChartTypes
     },
 } = require('../lib/const');
+const Sequelize = require('sequelize');
 
 exports.show = asyncHandler(async (req, res, next) => {
+    const {analytic_id, component_id} = req.query;
+    const env = process.env.NODE_ENV || 'development';
+    const config = require(__dirname + '/../config/config.js')[env];
+    let target = new Sequelize(config.database_target, config.username, config.password, config);
 
+    const analytic = DB_Analytics.findOne({
+        where: {
+            id: analytic_id,
+            deleted_at: null
+        },
+        include: [
+            {
+                model: DB_Charts,
+                attributes: ['name']
+            },
+            {
+                model: DB_ChartTypes,
+                attributes: ['name']
+            },
+            {
+                model: DB_Components,
+                where: {
+                    id: component_id
+                },
+                include: [
+                    {
+                        model: DB_yAxises
+                    }
+                ]
+            }
+        ]
+    });
+    const result = target.query(analytic.Components.queryStatement);
+    for (const yAxis of analytic.Components.yAxises) {
+        let obj = {
+            [yAxis.name]: result[yAxis.collumnName]
+        };
+    }
 });
 
