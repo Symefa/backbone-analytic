@@ -7,9 +7,8 @@ const {
         DB_Charts,
         DB_ChartTypes
     },
-} = require('../lib/const');
+} = require('../utils/const');
 const Sequelize = require('sequelize');
-
 exports.show = asyncHandler(async (req, res, next) => {
     const {analytic_id, component_id} = req.query;
     const env = process.env.NODE_ENV || 'development';
@@ -43,11 +42,20 @@ exports.show = asyncHandler(async (req, res, next) => {
             }
         ]
     });
-    const result = target.query(analytic.Components.queryStatement);
+    const result = await target.query(analytic.Components.queryStatement);
+    const container = [];
     for (const yAxis of analytic.Components.yAxises) {
         let obj = {
-            [yAxis.name]: result[yAxis.collumnName]
+            name: yAxis.name,
+            data: result[yAxis.collumnName]
         };
+        container.push(obj);
     }
+    let obj = {
+        categories: result[analytic.Components.xAxisName],
+        series: container
+    }
+
+    return res.jsend.success(obj);
 });
 

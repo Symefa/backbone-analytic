@@ -1,5 +1,4 @@
 const express = require("express");
-const { authenticate } = asyncHandler(async () => {});
 const namespace = '/analytic'
 const router = express.Router();
 const {
@@ -10,8 +9,10 @@ const {
     show,
 } = require("../controllers/analytic");
 
-router.get(namespace+'s', authenticate, index);
-router.get(namespace, authenticate, show);
-router.post(namespace, authenticate, create);
-router.put(namespace, authenticate, update);
-router.delete(namespace, authenticate, deleteA);
+router.get(namespace + 's', index);
+router.get(namespace, show);
+router.post(namespace, create);
+router.put(namespace, update);
+router.delete(namespace, deleteA);
+
+module.exports = router;

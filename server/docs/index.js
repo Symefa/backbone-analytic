@@ -1,6 +1,11 @@
-const allDocs = [
+const analyticDoc = require('./analytic.doc');
+const dataDoc = require('./data.doc')
 
+const allDocs = [
+    analyticDoc.default,
+    dataDoc.default
 ]
+
 let apiDoc = {
     openapi: "3.0.0",
     info: {

@@ -7,7 +7,7 @@ const {
         DB_Charts,
         DB_ChartTypes
     },
-} = require('../lib/const');
+} = require('../utils/const');
 
 exports.index = asyncHandler(async (req, res, next) => {
     const analytics = await DB_Analytics.findAll({
@@ -30,6 +30,7 @@ exports.index = asyncHandler(async (req, res, next) => {
     for (const analytic of analytics) {
         let obj = {
             analytic: {
+                id: analytic.id,
                 isDrilldown: analytic.isDrilldown,
                 chart: analytic.Chart.name,
                 chartType: analytic.ChartType.name,
@@ -70,6 +71,7 @@ exports.show = asyncHandler(async (req, res, next) => {
     });
     let obj = {
         analytic: {
+            id: analytic.id,
             isDrilldown: analytic.isDrilldown,
             chart: analytic.Chart.name,
             chartType: analytic.ChartType.name,

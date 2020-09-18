@@ -5,4 +5,6 @@ const {
     show,
 } = require("../controllers/data");
 
-router.get(namespace, null, show);
+router.get(namespace, show);
+module.exports = router;
+

@@ -9,15 +9,15 @@ const openApiDoc = require('./docs')
 const analytic = require('./routes/analytic');
 const data = require('./routes/data');
 
-//ROUTES
-app.use(analytic);
-app.use(data);
-
 //MIDDLEWARE
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: false }))
 app.use(jsend.middleware)
+
+//ROUTES
+router.use(analytic);
+router.use(data);
 
 
 //DOC
