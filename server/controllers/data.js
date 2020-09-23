@@ -15,47 +15,58 @@ exports.show = asyncHandler(async (req, res, next) => {
     const config = require(__dirname + '/../config/config.js')[env];
     let target = new Sequelize(config.database_target, config.username, config.password, config);
 
-    const analytic = DB_Analytics.findOne({
+    const analytic = await DB_Analytics.findOne({
         where: {
             id: analytic_id,
-            deleted_at: null
+            deletedAt: null
         },
         include: [
             {
                 model: DB_Charts,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'Chart'
             },
             {
                 model: DB_ChartTypes,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'ChartType'
             },
             {
                 model: DB_Components,
-                where: {
-                    id: component_id
-                },
+                where: {id: component_id},
+                as: 'Components',
                 include: [
                     {
-                        model: DB_yAxises
+                        model: DB_yAxises,
+                        as: 'yAxises'
                     }
                 ]
-            }
+            },
         ]
     });
-    const result = await target.query(analytic.Components.queryStatement);
-    const container = [];
-    for (const yAxis of analytic.Components.yAxises) {
+    const result = await target.query(new Buffer.from(analytic.Components[0].queryStatement, 'base64').toString());
+    let container = [];
+    for (const yAxis of analytic.Components[0].yAxises) {
+        let coldata = [];
+        for (let i = 0; i < result[0].length; i++) {
+            coldata.push(result[0][i][yAxis.columnName]);
+        }
         let obj = {
             name: yAxis.name,
-            data: result[yAxis.collumnName]
+            data: coldata,
         };
         container.push(obj);
     }
+    let cat = [];
+    for (let i = 0; i < result[0].length; i++) {
+        cat.push(result[0][i][analytic.Components[0].xAxisName]);
+    }
     let obj = {
-        categories: result[analytic.Components.xAxisName],
+        categories: cat,
         series: container
     }
 
     return res.jsend.success(obj);
-});
+})
+;
 

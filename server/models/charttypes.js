@@ -8,7 +8,7 @@ module.exports = (sequelize, DataTypes) => {
         {timestamps: true}
     );
     ChartTypes.associate = function (models) {
-        ChartTypes.hasMany(models.Analytics, {foreignKey: 'ChartTypeId', as: 'Analytics'});
+        ChartTypes.hasMany(models.Analytics, {foreignKey: 'chartTypeId', as: 'Analytics'});
     };
     return ChartTypes;
 };

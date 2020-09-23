@@ -5,7 +5,6 @@ const app = express()
 const router = express.Router()
 const swaggerUI = require('swagger-ui-express')
 const openApiDoc = require('./docs')
-
 const analytic = require('./routes/analytic');
 const data = require('./routes/data');
 
@@ -18,7 +17,6 @@ app.use(jsend.middleware)
 //ROUTES
 router.use(analytic);
 router.use(data);
-
 
 //DOC
 app.use('/api/v1',router)

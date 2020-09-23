@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
         {
             componentId: DataTypes.INTEGER,
             name: DataTypes.STRING,
-            stackName: DataTypes.STRING,
+            columnName: DataTypes.STRING,
         },
         {timestamps: true}
     );

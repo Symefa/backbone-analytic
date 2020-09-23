@@ -91,42 +91,37 @@ const schema = {
         title: "Create Analytic",
         type: "object",
         properties: {
-            analytic: {
-                type: "object",
-                properties: {
-                    is_drilldown: {
-                        type: "boolean"
-                    },
-                    chart_id: {
-                        type: "integer"
-                    },
-                    chart_type: {
-                        type: "integer"
-                    },
-                    theme_data: {
-                        type: 'string'
-                    },
-                    components: {
-                        type: "array",
-                        items: {
-                            properties: {
-                                query_statement: {
-                                    type: "string"
-                                },
-                                x_axis_name: {
-                                    type: "string"
-                                },
-                                y_axises: {
-                                    type: "array",
-                                    items: {
-                                        properties: {
-                                            name: {
-                                                type: "string"
-                                            },
-                                            stack_name: {
-                                                type: "string"
-                                            }
-                                        }
+            is_drilldown: {
+                type: "boolean"
+            },
+            chart_id: {
+                type: "integer"
+            },
+            chart_type: {
+                type: "integer"
+            },
+            theme_data: {
+                type: 'string'
+            },
+            components: {
+                type: "array",
+                items: {
+                    properties: {
+                        query_statement: {
+                            type: "string"
+                        },
+                        x_axis_name: {
+                            type: "string"
+                        },
+                        y_axises: {
+                            type: "array",
+                            items: {
+                                properties: {
+                                    name: {
+                                        type: "string"
+                                    },
+                                    column_name: {
+                                        type: "string"
                                     }
                                 }
                             }
@@ -175,7 +170,7 @@ const schema = {
                                             name: {
                                                 type: "string"
                                             },
-                                            stack_name: {
+                                            column_name: {
                                                 type: "string"
                                             }
                                         }

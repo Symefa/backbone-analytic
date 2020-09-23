@@ -12,16 +12,18 @@ const {
 exports.index = asyncHandler(async (req, res, next) => {
     const analytics = await DB_Analytics.findAll({
         where: {
-            deleted_at: null,
+            deletedAt: null,
         },
         include: [
             {
                 model: DB_Charts,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'Chart'
             },
             {
                 model: DB_ChartTypes,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'ChartType'
             },
         ]
     });
@@ -48,23 +50,26 @@ exports.show = asyncHandler(async (req, res, next) => {
     const analytic = await DB_Analytics.findOne({
         where: {
             id: id,
-            deleted_at: null,
+            deletedAt: null,
         },
         include: [
             {
                 model: DB_Charts,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'Chart'
             },
             {
                 model: DB_ChartTypes,
-                attributes: ['name']
+                attributes: ['name'],
+                as: 'ChartType'
             },
             {
                 model: DB_Components,
+                as: 'Components',
                 include: [
                     {
-                        model: DB_yAxises
-                    }
+                        model: DB_yAxises,
+                        as: 'yAxises'                    }
                 ]
             },
         ]
@@ -75,7 +80,7 @@ exports.show = asyncHandler(async (req, res, next) => {
             isDrilldown: analytic.isDrilldown,
             chart: analytic.Chart.name,
             chartType: analytic.ChartType.name,
-            themeData: analytic.themeData,
+            themeData: new Buffer.from(analytic.themeData,'base64').toString(),
             components: analytic.Components,
         }
     }
@@ -83,41 +88,38 @@ exports.show = asyncHandler(async (req, res, next) => {
 });
 
 exports.create = asyncHandler(async (req, res, next) => {
-    const {
-        is_drilldown,
-        chart_id,
-        chart_type_id,
-        theme_data,
-        components
-    } = req.body;
+    const {is_drilldown, chart_id, chart_type_id, theme_data, components} = req.body;
     try {
         const analytic = await DB_Analytics.create({
             isDrilldown: is_drilldown,
             chartId: chart_id,
-            chart_type_id: chart_type_id,
+            chartTypeId: chart_type_id,
             themeData: theme_data
         });
         if (analytic) {
             for (const component of components) {
-                const component = await DB_Components.create({
+                const cmp = await DB_Components.create({
                     analyticId: analytic.id,
                     queryStatement: component.query_statement,
                     xAxisName: component.x_axis_name,
                 })
-                if (component) {
+                if (cmp) {
                     for (const yAxis of component.y_axises) {
                         DB_yAxises.create({
-                            componentId: component.id,
+                            componentId: cmp.id,
                             name: yAxis.name,
-                            stackName: yAxis.stack_name,
+                            columnName: yAxis.column_name,
                         })
                     }
+                    res.jsend.success({
+                        message: "Analytic Created Successfully."
+                    });
                 }
             }
         }
     } catch (e) {
         return res.status(400).jsend.error({
-            message: 'Database Error.'
+            message: {...e},
         });
     }
 
@@ -176,7 +178,7 @@ exports.update = asyncHandler(async (req, res, next) => {
                         DB_yAxises.create({
                             componentId: component.id,
                             name: yAxis.name,
-                            stackName: yAxis.stack_name,
+                            columnName: yAxis.column_name,
                         })
                     }
                 }
